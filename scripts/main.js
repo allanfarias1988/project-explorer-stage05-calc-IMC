@@ -1,5 +1,5 @@
-import { calculateIMC } from "./calculateIMC.js";
-import { toggleModal } from "./toggleModal.js";
+import { calculateIMC, messageAlert } from "./calculateIMC.js";
+import { toggleModal, modal } from "./toggleModal.js";
 import { validateInputs } from "./validation.js";
 
 const imcElement = document.querySelector("#imc");
@@ -33,7 +33,7 @@ btnCalculateIMC.addEventListener("click", (e) => {
   const weight = Number(weightInput.value);
   const height = Number(heightInput.value);
   const calculatedIMC = calculateIMC(weight, height);
-  imcElement.innerText = calculatedIMC;
+  imcElement.innerText = messageAlert(calculatedIMC);
 });
 
 const resetForm = () => {
@@ -41,7 +41,16 @@ const resetForm = () => {
   heightInput.value = "";
 };
 
-btnClose.addEventListener("click", () => {
+btnClose.addEventListener("click", (event) => {
   toggleModal();
   resetForm();
 });
+
+window.addEventListener("keydown", handleKeydown);
+
+function handleKeydown(event) {
+  if (event.key == "Escape") {
+    modal.classList.add("hide");
+    resetForm();
+  }
+}
